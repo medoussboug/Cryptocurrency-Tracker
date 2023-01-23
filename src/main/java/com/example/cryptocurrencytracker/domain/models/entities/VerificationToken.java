@@ -22,10 +22,10 @@ public class VerificationToken {
 
     private String token;
 
-    @OneToOne(mappedBy="verificationToken")
+    @OneToOne(mappedBy = "verificationToken")
     private UserAccount userAccount;
 
-    private LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(10l);
+    private LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(10L);
 
     public VerificationToken(String token, UserAccount userAccount) {
         this.token = token;

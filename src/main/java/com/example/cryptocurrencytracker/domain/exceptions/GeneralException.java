@@ -2,7 +2,7 @@ package com.example.cryptocurrencytracker.domain.exceptions;
 
 import java.util.Objects;
 
-public class GeneralException extends RuntimeException{
+public class GeneralException extends RuntimeException {
     /**
      * code : failed Method name
      * message : message to show
@@ -11,22 +11,24 @@ public class GeneralException extends RuntimeException{
     private final String message;
 
 
-    public GeneralException(String code,String message) {
+    public GeneralException(String code, String message) {
         super(message);
         this.code = code;
         this.message = message;
     }
 
-    public GeneralException(String code,String message, Throwable cause) {
+    public GeneralException(String code, String message, Throwable cause) {
         super(message, cause);
         this.code = code;
         this.message = message;
     }
-    public GeneralException(String code,Exception exception) {
+
+    public GeneralException(String code, Exception exception) {
         super(exception.getMessage(), exception.getCause());
         this.code = code;
         this.message = exception.getMessage();
     }
+
     public GeneralException(Exception exception) {
         super(exception.getMessage(), exception.getCause());
         this.code = exception.getClass().getSimpleName();

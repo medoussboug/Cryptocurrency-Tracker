@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -39,6 +40,9 @@ public class UserAccount {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "verificationToken_id", referencedColumnName = "id")
     private VerificationToken verificationToken;
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private Set<FavoriteCryptocurrency> usersFavoriteCryptocurrencies;
 
     public UserAccountRole getUserRole() {
         return userRole;

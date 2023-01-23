@@ -1,5 +1,6 @@
-package com.example.cryptocurrencytracker.domain.exceptions;
+package com.example.cryptocurrencytracker.domain.exceptions.user_account;
 
+import com.example.cryptocurrencytracker.domain.exceptions.GeneralException;
 import org.springframework.http.HttpStatus;
 
 

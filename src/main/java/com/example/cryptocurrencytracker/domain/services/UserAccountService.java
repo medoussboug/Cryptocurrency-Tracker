@@ -3,9 +3,10 @@ package com.example.cryptocurrencytracker.domain.services;
 import com.example.cryptocurrencytracker.data.mappers.UserAccountMapper;
 import com.example.cryptocurrencytracker.data.repositories.UserAccountRepository;
 import com.example.cryptocurrencytracker.data.repositories.VerificationTokenRepository;
-import com.example.cryptocurrencytracker.domain.exceptions.EmailTakenException;
-import com.example.cryptocurrencytracker.domain.exceptions.UserNotFoundException;
-import com.example.cryptocurrencytracker.domain.exceptions.UsernameTakenException;
+import com.example.cryptocurrencytracker.domain.exceptions.user_account.EmailTakenException;
+import com.example.cryptocurrencytracker.domain.exceptions.user_account.UserNotFoundException;
+import com.example.cryptocurrencytracker.domain.exceptions.user_account.UsernameTakenException;
+import com.example.cryptocurrencytracker.domain.models.NotificationSubjects;
 import com.example.cryptocurrencytracker.domain.models.UserAccountRole;
 import com.example.cryptocurrencytracker.domain.models.dtos.UserAccountDTO;
 import com.example.cryptocurrencytracker.domain.models.entities.UserAccount;
@@ -28,6 +29,7 @@ import java.util.List;
 @Slf4j
 public class UserAccountService {
     private final UserAccountRepository userRepository;
+    private final NotificationService notificationService;
     private final UserAccountMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final VerificationTokenRepository verificationTokenRepository;
@@ -44,6 +46,7 @@ public class UserAccountService {
         UserAccount newUser = userMapper.toEntity(userDTO);
         newUser.setDateOfCreation(LocalDate.now());
         newUser.setPassword(passwordEncoder.encode(userDTO.password()));
+        newUser.setUserRole(UserAccountRole.UNVERIFIED_USER);
         UserAccountDTO user = userMapper.toDTO(userRepository.save(newUser));
         sendVerificationEmail(newUser);
         return user;
@@ -56,18 +59,16 @@ public class UserAccountService {
 
         log.info("Validation token generated");
         //send confirmation email
-//        messageProducer.sendEmailVerification(MessageTopics.EMAIL_VERIFICATION.toString(),new VerificationTokenDTO(
-//                newAccount.getEmail(),
-//                verificationToken.getToken(),
-//                verificationToken.getExpiryDate()
-//        ));
+        notificationService.sendEmail(newAccount.getEmail(), NotificationSubjects.USER_CREATED.name(), notificationService.welcomeNotificationBodyFormatter(newAccount.getUsername(), verificationToken.getToken(), verificationToken.getExpiryDate().toString()));
 
         log.info("Email message sent to notification service");
     }
 
     @Transactional
     public Boolean verifyAccount(String username, String token) {
-        final var isVerifiedWrapper = new Object(){Boolean isVerified;};
+        final var isVerifiedWrapper = new Object() {
+            Boolean isVerified;
+        };
         UserAccount userAccount = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException());
         verificationTokenRepository.findByUserAccountAndToken(userAccount, token).ifPresentOrElse((VerificationToken) -> {

@@ -3,8 +3,8 @@ package com.example.cryptocurrencytracker.security.jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
-    private String secret = "secrectscret";
+    private final String secret = "secrectscret";
 
-    private Long expiration = 70000l;
+    private final Long expiration = 70000L;
 
     public String generateToken(UserDetails userDetails) {
         String authorities = userDetails.getAuthorities().stream()

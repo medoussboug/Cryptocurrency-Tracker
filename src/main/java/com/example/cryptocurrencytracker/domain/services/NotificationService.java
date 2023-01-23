@@ -23,6 +23,32 @@ public class NotificationService {
         javaMailSender.send(mailMessage);
     }
 
+    public String welcomeNotificationBodyFormatter(String username, String token, String expiryDate) {
+        String bodyHtml = """
+                        
+                Hello %s
+                Welcome to CrytpTrack, we inform you that your account has been successfuly created, but not verified yet, here is the verification token
+                %s , it expires in %s
+
+                """;
+
+        bodyHtml = String.format(bodyHtml, username, token, expiryDate);
+
+        return bodyHtml;
+    }
+
+    public String priceReachedNotificationBodyFormatter(String username, String name) {
+        String bodyHtml = """
+                        
+                Hello %s
+                                
+                Quick Quick!!!!!\\n The price of %s has gone to your desired price",
+
+                """;
+        bodyHtml = String.format(bodyHtml, username, name);
+        return bodyHtml;
+    }
+
 }
 
 

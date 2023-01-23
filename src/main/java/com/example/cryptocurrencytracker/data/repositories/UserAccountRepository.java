@@ -15,6 +15,6 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, UUID> 
     Optional<UserAccount> findByEmail(String email);
 
     @Query(value = "FROM UserAccount b WHERE b.username = :usernameOrEmail OR b.email = :usernameOrEmail")
-    public Optional<UserAccount> findByUsernameOrEmail(String usernameOrEmail);
+    Optional<UserAccount> findByUsernameOrEmail(String usernameOrEmail);
 
 }

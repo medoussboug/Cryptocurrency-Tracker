@@ -1,28 +1,18 @@
 package com.example.cryptocurrencytracker.presentation;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.List;
-
 import com.example.cryptocurrencytracker.domain.models.dtos.UserAccountDTO;
 import com.example.cryptocurrencytracker.domain.services.UserAccountService;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -83,10 +73,9 @@ public class UserAccountController {
         return ResponseEntity.ok(userAccountService.updateOrganization(principal.getName(), organization));
     }
 
-    @PostMapping("/verification/{token}")
-    @Secured("UNVERIFIED_USER")
-    Boolean verifyAccount(String token, Principal principal) {
-        log.info("Verify TOken");
+    @PostMapping("/verification")
+    Boolean verifyAccount(@RequestParam("image") String token, Principal principal) {
+        log.info("Verify Token");
         return userAccountService.verifyAccount(principal.getName(), token);
     }
 }

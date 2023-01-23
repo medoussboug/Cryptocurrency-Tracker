@@ -1,6 +1,11 @@
 package com.example.cryptocurrencytracker.presentation;
 
 
+import com.example.cryptocurrencytracker.security.AuthenticationRequest;
+import com.example.cryptocurrencytracker.security.AuthenticationResponse;
+import com.example.cryptocurrencytracker.security.MyUserDetailsService;
+import com.example.cryptocurrencytracker.security.jwt.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,14 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.cryptocurrencytracker.security.AuthenticationRequest;
-import com.example.cryptocurrencytracker.security.AuthenticationResponse;
-import com.example.cryptocurrencytracker.security.MyUserDetailsService;
-import com.example.cryptocurrencytracker.security.jwt.JwtUtil;
-
-import lombok.RequiredArgsConstructor;
-
 
 
 // /**

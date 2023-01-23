@@ -9,12 +9,12 @@ import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record UserAccountDTO (
+public record UserAccountDTO(
         UUID id,
         @NotBlank
         @NotNull
         String username,
-        @Pattern(regexp = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$" , message = "Password must contain minimum eight characters, at least one uppercase letter, one lowercase letter and one number")
+        @Pattern(regexp = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$", message = "Password must contain minimum eight characters, at least one uppercase letter, one lowercase letter and one number")
         String password,
         @Email
         String email,

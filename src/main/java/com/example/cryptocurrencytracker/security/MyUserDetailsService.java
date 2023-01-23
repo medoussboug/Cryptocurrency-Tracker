@@ -1,4 +1,3 @@
-
 package com.example.cryptocurrencytracker.security;
 
 import com.example.cryptocurrencytracker.domain.services.UserAccountService;

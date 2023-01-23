@@ -1,21 +1,16 @@
 package com.example.cryptocurrencytracker.domain.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
 /**
- *
  * @author mBougueddach
  */
 @Service
@@ -42,7 +37,7 @@ public class MailJetService {
         Map<String, Object> payload = new HashMap<>();
         payload.put("Messages", Collections.singletonList(
                 Map.of("From", Map.of("Email", "mob.dev2022@gmail.com", "Name", "Sender"),
-                        "To", Collections.singletonList(Map.of("Email", "mob2k01@gmail.com")),
+                        "To", Collections.singletonList(Map.of("Email", to)),
                         "Subject", subject,
                         "TextPart", body)));
 
