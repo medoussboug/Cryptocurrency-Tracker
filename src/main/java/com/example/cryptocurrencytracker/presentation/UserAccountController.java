@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin(maxAge = 3600)
 public class UserAccountController {
     private final UserAccountService userAccountService;
 

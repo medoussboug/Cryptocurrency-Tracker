@@ -3,7 +3,6 @@ package com.example.cryptocurrencytracker.domain.services;
 import com.example.cryptocurrencytracker.data.mappers.CryptocurrencyMapper;
 import com.example.cryptocurrencytracker.data.repositories.CryptocurrencyRepository;
 import com.example.cryptocurrencytracker.data.repositories.FavoriteCryptocurrencyRepository;
-import com.example.cryptocurrencytracker.domain.exceptions.cryptocurrency.CryptocurrencyNotFoundException;
 import com.example.cryptocurrencytracker.domain.models.NotificationSubjects;
 import com.example.cryptocurrencytracker.domain.models.dtos.CryptocurrencyDTO;
 import com.example.cryptocurrencytracker.domain.models.entities.Cryptocurrency;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,9 +30,11 @@ public class CryptocurrencyService {
     public void loadData() {
         List<CryptocurrencyDTO> loadedCryptocurrencies = coinGeckoClient.getCryptocurrencies();
         for (CryptocurrencyDTO loadedCryptocurrency : loadedCryptocurrencies) {
-            Cryptocurrency cryptocurrency = cryptocurrencyRepository.findById(loadedCryptocurrency.id)
-                    .orElseThrow(CryptocurrencyNotFoundException::new);
-            if (!loadedCryptocurrency.currentPrice.equals(cryptocurrency.getCurrentPrice())) {
+//            Cryptocurrency cryptocurrency = cryptocurrencyRepository.findById(loadedCryptocurrency.id)
+//                    .orElseThrow(CryptocurrencyNotFoundException::new);
+            Optional<Cryptocurrency> cryptocurrencyOptional = cryptocurrencyRepository.findById(loadedCryptocurrency.id);
+            if (cryptocurrencyOptional.isPresent() && !loadedCryptocurrency.currentPrice.equals(cryptocurrencyOptional.get().getCurrentPrice())) {
+                Cryptocurrency cryptocurrency = cryptocurrencyOptional.get();
                 Set<FavoriteCryptocurrency> favoriteCryptocurrencies = cryptocurrency.getUsersFavoriteCryptocurrencies();
                 if (favoriteCryptocurrencies != null && favoriteCryptocurrencies.size() > 0) {
                     for (FavoriteCryptocurrency favoriteCryptocurrency : favoriteCryptocurrencies) {

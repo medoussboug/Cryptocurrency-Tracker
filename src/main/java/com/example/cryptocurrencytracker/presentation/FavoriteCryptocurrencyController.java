@@ -12,6 +12,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("api/v1/cryptocurrencies/favorites")
 @AllArgsConstructor
+@CrossOrigin(maxAge = 3600)
 public class FavoriteCryptocurrencyController {
     @Autowired
     private final FavoriteCryptocurrencyService favoriteCryptocurrencyService;
