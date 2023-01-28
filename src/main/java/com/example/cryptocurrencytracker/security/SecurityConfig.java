@@ -35,7 +35,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5414"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
         // set allowed headers
@@ -64,7 +64,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().and().csrf().disable().authorizeRequests().requestMatchers("/api/v1/auth/authenticate", "/api/v1/user/add", "/api/v*/cryptocurrencies").permitAll()
+        httpSecurity.cors().and().csrf().disable().authorizeRequests().requestMatchers("/api/v1/auth/authenticate", "/api/v1/user/add", "/api/v*/cryptocurrencies", "/h2/**").permitAll()
                 .anyRequest().authenticated().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(corsFilter(), SessionManagementFilter.class);

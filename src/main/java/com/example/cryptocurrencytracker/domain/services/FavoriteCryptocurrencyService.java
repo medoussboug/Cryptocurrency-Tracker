@@ -28,9 +28,11 @@ public class FavoriteCryptocurrencyService {
     private final CryptocurrencyRepository cryptocurrencyRepository;
 
     public void addFavoriteCryptocurrency(FavoriteCryptocrurrencyDTO favoriteCryptocrurrencyDTO, String username) {
-        favoriteCryptocurrencyRepository.findByCryptoName(favoriteCryptocrurrencyDTO.cryptoId).orElseThrow(
-                FavoriteCryptocurrencyExistsException::new
-        );
+        try {
+            favoriteCryptocurrencyRepository.findByCryptoName(favoriteCryptocrurrencyDTO.cryptoId).isPresent();
+        } catch (Exception e) {
+            throw new FavoriteCryptocurrencyExistsException();
+        }
         FavoriteCryptocurrency favoriteCryptocurrency = favoriteCryptocurrencyMapper.mapToEntity(favoriteCryptocrurrencyDTO);
         if (favoriteCryptocurrency != null) {
             UserAccount user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);

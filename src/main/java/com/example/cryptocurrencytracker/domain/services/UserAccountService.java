@@ -54,6 +54,7 @@ public class UserAccountService {
 
     private void sendVerificationEmail(UserAccount newAccount) {
         String token = String.format("%06d", (int) (Math.random() * 1000000));
+        log.info(token + " verif");
         VerificationToken verificationToken = new VerificationToken(token, newAccount);
         verificationTokenRepository.save(verificationToken);
 
@@ -66,11 +67,12 @@ public class UserAccountService {
 
     @Transactional
     public Boolean verifyAccount(String username, String token) {
+        log.info(token);
         final var isVerifiedWrapper = new Object() {
             Boolean isVerified;
         };
         UserAccount userAccount = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         verificationTokenRepository.findByUserAccountAndToken(userAccount, token).ifPresentOrElse((VerificationToken) -> {
                     userAccount.setUserRole(UserAccountRole.VERIFIED_USER);
                     isVerifiedWrapper.isVerified = true;
@@ -87,14 +89,14 @@ public class UserAccountService {
 
     public UserAccountDTO getUserAccount(String usernameOrEmail) {
         UserAccount user = userRepository.findByUsernameOrEmail(usernameOrEmail)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         return userMapper.toDTO(user);
     }
 
     @Transactional
     public UserAccountDTO updateFullName(String usernameOrEmail, String fullname) {
         UserAccount user = userRepository.findByUsernameOrEmail(usernameOrEmail)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         user.setFullName(fullname);
         return userMapper.toDTO(user);
     }
@@ -102,7 +104,7 @@ public class UserAccountService {
     @Transactional
     public UserAccountDTO updateEmail(String usernameOrEmail, String email) {
         UserAccount user = userRepository.findByUsernameOrEmail(usernameOrEmail)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         user.setEmail(email);
         return userMapper.toDTO(user);
     }
@@ -110,14 +112,14 @@ public class UserAccountService {
     @Transactional
     public void updatePassword(String usernameOrEmail, String password) {
         UserAccount user = userRepository.findByUsernameOrEmail(usernameOrEmail)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         user.setPassword(passwordEncoder.encode(password));
     }
 
     @Transactional
     public UserAccountDTO updateTitle(String usernameOrEmail, String title) {
         UserAccount user = userRepository.findByUsernameOrEmail(usernameOrEmail)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         user.setTitle(title);
         return userMapper.toDTO(user);
     }
@@ -125,7 +127,7 @@ public class UserAccountService {
     @Transactional
     public UserAccountDTO updateOrganization(String usernameOrEmail, String organization) {
         UserAccount user = userRepository.findByUsernameOrEmail(usernameOrEmail)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         user.setOrganization(organization);
         return userMapper.toDTO(user);
     }
@@ -133,13 +135,13 @@ public class UserAccountService {
     @Transactional
     public void uploadProfilePicture(MultipartFile picture, String username) throws IOException {
         UserAccount user = userRepository.findByUsernameOrEmail(username)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         user.setPicture(picture.getBytes());
     }
 
-    public byte[] viewProfilePicture(String username) throws IOException {
+    public byte[] viewProfilePicture(String username){
         UserAccount user = userRepository.findByUsernameOrEmail(username)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         byte[] picture;
         if (user.getPicture() != null) {
             picture = user.getPicture();
@@ -156,7 +158,7 @@ public class UserAccountService {
 
     public UserDetails loadUserByUsername(String username) {
         UserAccount user = userRepository.findByUsernameOrEmail(username)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         return new MyUserDetails(userMapper.toDTO(user));
     }
 }
