@@ -27,8 +27,7 @@ public class NotificationService {
         String bodyHtml = """
                         
                 Hello %s
-                Welcome to CrytpTrack, we inform you that your account has been successfuly created, but not verified yet, here is the verification token
-                %s , it expires in %s
+                Welcome to CryptoTracker, we inform you that your account has been successfuly created
 
                 """;
 
@@ -43,6 +42,18 @@ public class NotificationService {
                 Hello %s
                                 
                 Quick Quick!!!!!\\n The price of %s has gone to your desired price",
+
+                """;
+        bodyHtml = String.format(bodyHtml, username, name);
+        return bodyHtml;
+    }
+
+    public String favoriteAddedNotificationBodyFormatter(String username, String name) {
+        String bodyHtml = """
+                        
+                Hello %s
+                                
+                %s was successfully added to the favorites,
 
                 """;
         bodyHtml = String.format(bodyHtml, username, name);

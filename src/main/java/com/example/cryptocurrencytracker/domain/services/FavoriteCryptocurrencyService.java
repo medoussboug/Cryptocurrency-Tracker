@@ -25,6 +25,7 @@ public class FavoriteCryptocurrencyService {
     private final FavoriteCryptocurrencyMapper favoriteCryptocurrencyMapper;
     private final FavoriteCryptocurrencyRepository favoriteCryptocurrencyRepository;
     private final UserAccountRepository userRepository;
+    private final NotificationService notificationService;
     private final CryptocurrencyRepository cryptocurrencyRepository;
 
     public void addFavoriteCryptocurrency(FavoriteCryptocrurrencyDTO favoriteCryptocrurrencyDTO, String username) {
@@ -50,6 +51,7 @@ public class FavoriteCryptocurrencyService {
             favoriteCryptocurrencyRepository.save(favoriteCryptocurrency);
             userRepository.save(user);
             cryptocurrencyRepository.save(cryptocurrency);
+            notificationService.favoriteAddedNotificationBodyFormatter(username, favoriteCryptocurrency.getCryptoName());
         }
     }
 
